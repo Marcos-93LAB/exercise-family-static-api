@@ -35,8 +35,22 @@ def handle_hello():
         "family": members
     }
 
-
     return jsonify(response_body), 200
+
+@app.route('/members', methods=['POST'])
+def add_new_member():
+    request_body = request.json
+    print("Incoming request with the following body", request_body)
+    FamilyStructure.add_member(request_body)
+
+    return jsonify({"message": "New member added successfully"})
+
+@app.route('/members/<int:position>', methods=['DELETE'])
+def delete_member(id):
+    print("This is the position to delete:", id)
+    FamilyStructure.delete_member(id)
+    
+    return jsonify({"message": "Member deleted successfully"})
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
